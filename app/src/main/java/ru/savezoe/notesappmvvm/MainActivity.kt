@@ -18,13 +18,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             NotesAppMVVMTheme {
+                // https://developer.android.com/jetpack/compose/layouts/material используется как контейнер
                 Scaffold(
                     topBar = {
                         TopAppBar(
                             title = {
                                 Text(text = "Notes App")
                             },
-                            backgroundColor = Color.Blue,
+                            backgroundColor = Color(0xFF0080FF),
                             contentColor = Color.White,
                             elevation = 12.dp
                         )
@@ -35,6 +36,7 @@ class MainActivity : ComponentActivity() {
                             modifier = Modifier.fillMaxSize(),
                             color = MaterialTheme.colors.background
                         ) {
+                            //NavHostController для навигации по приложению
                             NoteNavHost()
                         }
                     })
