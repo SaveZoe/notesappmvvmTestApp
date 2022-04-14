@@ -1,5 +1,6 @@
 package ru.savezoe.notesappmvvm.screens
 
+import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,15 +12,19 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import ru.savezoe.notesappmvvm.MainViewModel
+import ru.savezoe.notesappmvvm.MainViewModelFactory
 import ru.savezoe.notesappmvvm.navigation.NavRoute
 import ru.savezoe.notesappmvvm.ui.theme.NotesAppMVVMTheme
 
 @Composable
-fun AddScreen(navController: NavHostController) {
+fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
     var title by remember { mutableStateOf("") }
     var subtitle by remember { mutableStateOf("") }
     Scaffold {
@@ -38,7 +43,10 @@ fun AddScreen(navController: NavHostController) {
                 onValueChange = { subtitle = it },
                 label = { Text(text = "Subtitle") })
             Button(modifier = Modifier.padding(top = 18.dp),
-                onClick = { navController.navigate(NavRoute.Main.route) }) {
+                onClick = {
+                    viewModel
+                    navController.navigate(NavRoute.Main.route)
+                }) {
                 Text(text = "Сохранить")
             }
         }
@@ -52,6 +60,10 @@ fun AddScreen(navController: NavHostController) {
 @Composable
 fun PrevAddScreen() {
     NotesAppMVVMTheme {
-        AddScreen(navController = rememberNavController())
+        val context = LocalContext.current
+        val mViewModel: MainViewModel =
+            viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+
+        AddScreen(navController = rememberNavController(), viewModel = mViewModel)
     }
 }

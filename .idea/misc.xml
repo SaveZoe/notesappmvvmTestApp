@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/java/ru/savezoe/notesappmvvm/MainActivity.kt" value="2.0" />
         <entry key="app/src/main/java/ru/savezoe/notesappmvvm/screens/Add.kt" value="0.25" />
         <entry key="app/src/main/java/ru/savezoe/notesappmvvm/screens/Main.kt" value="0.25" />
         <entry key="app/src/main/java/ru/savezoe/notesappmvvm/screens/Note.kt" value="0.25" />

@@ -1,5 +1,6 @@
 package ru.savezoe.notesappmvvm
 
+import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,8 +9,10 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.savezoe.notesappmvvm.navigation.NoteNavHost
 import ru.savezoe.notesappmvvm.ui.theme.NotesAppMVVMTheme
 
@@ -18,7 +21,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             NotesAppMVVMTheme {
-                // https://developer.android.com/jetpack/compose/layouts/material используется как контейнер
+                val context = LocalContext.current
+                val mViewModel: MainViewModel =
+                    viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+
                 Scaffold(
                     topBar = {
                         TopAppBar(
@@ -37,7 +43,7 @@ class MainActivity : ComponentActivity() {
                             color = MaterialTheme.colors.background
                         ) {
                             //NavHostController для навигации по приложению
-                            NoteNavHost()
+                            NoteNavHost(mViewModel)
                         }
                     })
             }
@@ -49,6 +55,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     NotesAppMVVMTheme {
+        val context = LocalContext.current
+        val mViewModel: MainViewModel =
+            viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
 
     }
 }

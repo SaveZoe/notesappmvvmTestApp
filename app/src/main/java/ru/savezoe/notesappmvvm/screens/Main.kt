@@ -1,8 +1,8 @@
 package ru.savezoe.notesappmvvm.screens
 
+import android.app.Application
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,15 +13,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import ru.savezoe.notesappmvvm.MainViewModel
+import ru.savezoe.notesappmvvm.MainViewModelFactory
+import ru.savezoe.notesappmvvm.model.Note
 import ru.savezoe.notesappmvvm.navigation.NavRoute
 import ru.savezoe.notesappmvvm.ui.theme.NotesAppMVVMTheme
 
 @Composable
-fun MainScreen(navController: NavHostController) {
+fun MainScreen(navController: NavHostController, viewModel: Any) {
     Scaffold(floatingActionButton = {
         FloatingActionButton(
             onClick = {
@@ -32,48 +37,12 @@ fun MainScreen(navController: NavHostController) {
                 imageVector = Icons.Filled.Add, contentDescription = "Add note", tint = Color.White
             )
         }
-    }) {
-
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            NoteItem(
-                title = "Заметка 1",
-                subTitle = "Тестовая заметка",
-                navController = navController
-            )
-            NoteItem(
-                title = "Заметка 2",
-                subTitle = "Тестовая заметка",
-                navController = navController
-            )
-            NoteItem(
-                title = "Заметка 3",
-                subTitle = "Тестовая заметка",
-                navController = navController
-            )
-            NoteItem(
-                title = "Заметка 4",
-                subTitle = "Тестовая заметка",
-                navController = navController
-            )
-            NoteItem(
-                title = "Заметка 5",
-                subTitle = "Тестовая заметка",
-                navController = navController
-            )
-            NoteItem(
-                title = "Заметка 6",
-                subTitle = "Тестовая заметка",
-                navController = navController
-            )
-        }
-    }
+    }) {}
 }
 
 
 @Composable
-fun NoteItem(title: String, subTitle: String, navController: NavHostController) {
+fun NoteItem(note: Note, navController: NavHostController) {
     Card(
         modifier = Modifier
             .fillMaxWidth(1f)
@@ -85,8 +54,8 @@ fun NoteItem(title: String, subTitle: String, navController: NavHostController) 
         Column(
             modifier = Modifier.padding(5.dp), horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = title)
-            Text(text = subTitle)
+            Text(text = note.title)
+            Text(text = note.subtitle)
         }
     }
 }
@@ -95,6 +64,10 @@ fun NoteItem(title: String, subTitle: String, navController: NavHostController) 
 @Composable
 fun PrevMainScreen() {
     NotesAppMVVMTheme {
-        MainScreen(navController = rememberNavController())
+        val context = LocalContext.current
+        val mViewModel: MainViewModel =
+            viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+
+        MainScreen(navController = rememberNavController(), viewModel = mViewModel)
     }
 }
