@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "870591494819",
+    "firebase_url": "https://notes-test-2e3a3-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "notes-test-2e3a3",
+    "storage_bucket": "notes-test-2e3a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:870591494819:android:a5cd0d5be7df77f9bb1d16",
+        "android_client_info": {
+          "package_name": "ru.savezoe.notesappmvvm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "870591494819-nkfp3lkbvdn9cnvq9lvdns7o2v4r1bj3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDc2Z141DvUAPxHgzE0yZAlskIb8RvYuBo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "870591494819-nkfp3lkbvdn9cnvq9lvdns7o2v4r1bj3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

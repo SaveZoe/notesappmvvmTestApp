@@ -20,13 +20,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import ru.savezoe.notesappmvvm.MainViewModel
 import ru.savezoe.notesappmvvm.MainViewModelFactory
+import ru.savezoe.notesappmvvm.model.Note
 import ru.savezoe.notesappmvvm.navigation.NavRoute
 import ru.savezoe.notesappmvvm.ui.theme.NotesAppMVVMTheme
+import ru.savezoe.notesappmvvm.utils.Constants
 
 @Composable
 fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
     var title by remember { mutableStateOf("") }
     var subtitle by remember { mutableStateOf("") }
+    var isButtonEnabled by remember { mutableStateOf(false) }
     Scaffold {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -34,20 +37,28 @@ fun AddScreen(navController: NavHostController, viewModel: MainViewModel) {
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Add new notes", modifier = Modifier.padding(13.dp)
+                text = Constants.Keys.ADD_NEW_NOTE, modifier = Modifier.padding(13.dp)
             )
             OutlinedTextField(value = title,
-                onValueChange = { title = it },
-                label = { Text(text = "Title") })
+                onValueChange = {
+                    title = it
+                    isButtonEnabled = title.isNotEmpty() && subtitle.isNotEmpty()
+                },
+                label = { Text(text = Constants.Keys.NOTE_TITLE) }, isError = title.isEmpty()
+            )
             OutlinedTextField(value = subtitle,
-                onValueChange = { subtitle = it },
-                label = { Text(text = "Subtitle") })
-            Button(modifier = Modifier.padding(top = 18.dp),
-                onClick = {
-                    viewModel
+                onValueChange = {
+                    subtitle = it
+                    isButtonEnabled = title.isNotEmpty() && subtitle.isNotEmpty()
+                },
+                label = { Text(text = Constants.Keys.NOTE_SUBTITLE) }, isError = subtitle.isEmpty()
+            )
+            Button(modifier = Modifier.padding(top = 18.dp), onClick = {
+                viewModel.addNote(note = Note(title = title, subtitle = subtitle)) {
                     navController.navigate(NavRoute.Main.route)
-                }) {
-                Text(text = "Сохранить")
+                }
+            }, enabled = isButtonEnabled) {
+                Text(text = Constants.Keys.SAVE)
             }
         }
     }

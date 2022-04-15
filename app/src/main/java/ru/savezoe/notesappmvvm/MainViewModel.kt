@@ -8,10 +8,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import ru.savezoe.notesappmvvm.database.firebase.AppFirebaseRepository
 import ru.savezoe.notesappmvvm.database.room.AppRoomDatabase
 import ru.savezoe.notesappmvvm.database.room.repository.RoomRepository
 import ru.savezoe.notesappmvvm.model.Note
 import ru.savezoe.notesappmvvm.utils.REPOSITORY
+import ru.savezoe.notesappmvvm.utils.TYPE_FIREBASE
 import ru.savezoe.notesappmvvm.utils.TYPE_ROOM
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -26,13 +28,46 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 REPOSITORY = RoomRepository(dao)
                 onSuccess()
             }
+            TYPE_FIREBASE -> {
+                REPOSITORY = AppFirebaseRepository()
+                REPOSITORY.connectToDatabase(
+                    { onSuccess() },
+                    { Log.d("checkData", "Error: $it") }
+                )
+            }
         }
     }
     fun addNote(note: Note, onSuccess: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
-
+            REPOSITORY.create(note = note) {
+                viewModelScope.launch(Dispatchers.Main) {
+                    onSuccess()
+                }
+            }
         }
     }
+
+    fun updateNote(note: Note, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            REPOSITORY.update(note = note) {
+                viewModelScope.launch(Dispatchers.Main) {
+                    onSuccess()
+                }
+            }
+        }
+    }
+
+    fun deleteNote(note: Note, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            REPOSITORY.delete(note = note) {
+                viewModelScope.launch(Dispatchers.Main) {
+                    onSuccess()
+                }
+            }
+        }
+    }
+
+    fun readAllNotes() = REPOSITORY.readAll
 }
 
 
